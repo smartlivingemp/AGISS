@@ -4,106 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Welcome - AGISS</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(270deg, #e0f7fa, #e3f2fd, #fce4ec);
-      background-size: 600% 600%;
-      animation: backgroundShift 15s ease infinite;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+  <link rel="stylesheet" href="styles/index.css" />
 
-    @keyframes backgroundShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .welcome-container {
-      background-color: rgba(255, 255, 255, 0.95);
-      padding: 40px 30px;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-      text-align: center;
-      position: relative;
-      backdrop-filter: blur(10px);
-    }
-
-    .welcome-container img {
-      width: 100px;
-      margin-bottom: 15px;
-    }
-
-    .animated-text {
-      font-size: 26px;
-      color: #004d40;
-      font-weight: bold;
-      animation: fadeInUp 1.2s ease-in-out;
-    }
-
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .logout-btn {
-      margin-top: 25px;
-      background-color: #e53935;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .logout-btn:hover {
-      background-color: #b71c1c;
-    }
-
-    @media (max-width: 480px) {
-      .animated-text {
-        font-size: 22px;
-      }
-
-      .logout-btn {
-        font-size: 14px;
-        padding: 10px 16px;
-      }
-    }
-  </style>
 </head>
 <body>
-  <div class="welcome-container">
-    <img src="https://accragirlsshs.com/wp-content/uploads/2024/08/agisslogo.png" alt="AGISS Logo">
-    <div class="animated-text" id="welcomeText">Welcome!</div>
+
+  <div class="header">
+    <div class="welcome-text" id="welcomeText">Welcome!</div>
     <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
 
-  <script>
-    const user = JSON.parse(localStorage.getItem("loggedInUser"));
-    const name = user?.name || "Guest";
-    document.getElementById("welcomeText").innerText = `Welcome, ${name}!`;
+  <div class="welcome-container">
+    <img src="https://accragirlsshs.com/wp-content/uploads/2024/08/agisslogo.png" alt="AGISS Logo">
+  </div>
 
-    function logout() {
-      localStorage.removeItem("loggedInUser");
-      window.location.href = "login.html";
-    }
-  </script>
+
+  <script src="scripts/index.js"></script>
+
 </body>
 </html>
