@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Database - AGISS</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #e3f2fd);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .db-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 900px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      overflow-x: auto;
+    }
+
+    .db-container h2 {
+      text-align: center;
+      color: #004d40;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    button.delete-btn {
+      background-color: #e53935;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button.delete-btn:hover {
+      background-color: #b71c1c;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-align: center;
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    @media (max-width: 600px) {
+      th, td {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="db-container">
+    <h2>All Registered Users</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+        <!-- Filled by JS -->
+      </tbody>
+    </table>
+    <a href="index.html">← Back to Home</a>
+  </div>
+
+  <script>
+    function loadUsers() {
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const tbody = document.getElementById("userTableBody");
+      tbody.innerHTML = "";
+
+      users.forEach((user, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.password}</td>
+          <td><button class="delete-btn" onclick="deleteUser(${index})">Delete</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function deleteUser(index) {
+      if (confirm("Are you sure you want to delete this user?")) {
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        users.splice(index, 1);
+        localStorage.setItem("users", JSON.stringify(users));
+        loadUsers(); // Reload table
+      }
+    }
+
+    // Initial load
+    loadUsers();
+  </script>
+</body>
+</html>

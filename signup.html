@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - AGISS</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #e3f2fd);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .signup-container {
+      background-color: white;
+      padding: 40px 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+    }
+
+    .signup-container img {
+      width: 100px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .signup-container h2 {
+      margin-bottom: 25px;
+      font-size: 24px;
+      color: #004d40;
+    }
+
+    .signup-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .signup-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .signup-container button:hover {
+      background-color: #0056b3;
+    }
+
+    .signup-container p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .signup-container a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    @media (max-width: 480px) {
+      .signup-container {
+        padding: 30px 20px;
+      }
+    }
+
+    .popup {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      opacity: 0;
+      animation: fadeInOut 2.5s forwards;
+      z-index: 1000;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(-50%, -10px); }
+      20% { opacity: 1; transform: translate(-50%, 0); }
+      80% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, -10px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <img src="https://accragirlsshs.com/wp-content/uploads/2024/08/agisslogo.png" alt="AGISS Logo">
+    <h2>Create Account</h2>
+    <form id="signupForm">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+      <p>Already have an account? <a href="login.html">Login</a></p>
+    </form>
+    <div id="successPopup" class="popup" style="display: none;">Account created!</div>
+  </div>
+
+  <script>
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const emailExists = users.some(u => u.email === email);
+      if (emailExists) {
+        alert("This email is already registered.");
+        return;
+      }
+
+      const hashedPassword = await hashPassword(password);
+      const user = { name, email, password: hashedPassword };
+      users.push(user);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // Show animated success popup
+      const popup = document.getElementById("successPopup");
+      popup.style.display = "block";
+
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 2500);
+    });
+  </script>
+</body>
+</html>
